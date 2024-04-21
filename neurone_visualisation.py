@@ -12,18 +12,18 @@ import csv
 dt = 0.01
 points = []
 SYNAPSES = [0, 0, 0, 0, 0, 0, 0]
-THRESHOLDS = [0, 0, 0, 0, 0]
+BIASES = [0, 0, 0, 0, 0]
 JUNCTIONS = [0,0]
 
 def load_parameters(filename='parameters.ini'):
-    global SYNAPSES, THRESHOLDS, JUNCTIONS
+    global SYNAPSES, BIASES, JUNCTIONS
     
     config = configparser.ConfigParser()
     config.read(filename)
     
-    if 'SYNAPSES' in config and 'THRESHOLDS' in config and 'JUNCTIONS' in config:
+    if 'SYNAPSES' in config and 'BIASES' in config and 'JUNCTIONS' in config:
         SYNAPSES = [float(config['SYNAPSES'][f'synapse_{i}']) for i in range(len(config['SYNAPSES']))]
-        THRESHOLDS = [float(config['THRESHOLDS'][f'threshold_{i}']) for i in range(len(config['THRESHOLDS']))]
+        BIASES = [float(config['BIASES'][f'bias_{i}']) for i in range(len(config['BIASES']))]
         JUNCTIONS = [float(config['JUNCTIONS'][f'junction_{i}']) for i in range(len(config['JUNCTIONS']))]
         print("Parameters loaded from", filename)
         # Optionally, update any UI elements like sliders here based on the loaded values
@@ -37,7 +37,7 @@ if len(sys.argv) > 1:
 def save_parameters(event):
     config = configparser.ConfigParser()
     config['SYNAPSES'] = {f'synapse_{i}': str(val) for i, val in enumerate(SYNAPSES)}
-    config['THRESHOLDS'] = {f'threshold_{i}': str(val) for i, val in enumerate(THRESHOLDS)}
+    config['BIASES'] = {f'bias_{i}': str(val) for i, val in enumerate(BIASES)}
     config['JUNCTIONS'] = {f'junction_{i}': str(val) for i, val in enumerate(JUNCTIONS)}
     with open('parameters.ini', 'w') as configfile:
         config.write(configfile)
@@ -45,8 +45,8 @@ def save_parameters(event):
 
 
 # Create the simulation function
-def simulate(SYNAPSES, THRESHOLDS, JUNCTIONS):
-    params = SteeringParameters(SYNAPSES=SYNAPSES, THRESHOLDS=THRESHOLDS, JUNCTIONS=JUNCTIONS)
+def simulate(SYNAPSES, BIASES, JUNCTIONS):
+    params = SteeringParameters(SYNAPSES=SYNAPSES, BIASES=BIASES, JUNCTIONS=JUNCTIONS)
     circuit = SteeringCircuit(dt, params)
     points = []
     for x in range(1000):
@@ -72,10 +72,10 @@ def update(val):
     for i, slider in enumerate(syn_sliders):
         SYNAPSES[i] = slider.val
     for i, slider in enumerate(thr_sliders):
-        THRESHOLDS[i] = slider.val
+        BIASES[i] = slider.val
     for i, slider in enumerate(jnc_sliders):
         JUNCTIONS[i] = slider.val
-    points = simulate(SYNAPSES, THRESHOLDS, JUNCTIONS)
+    points = simulate(SYNAPSES, BIASES, JUNCTIONS)
     ase_series = list(zip(*points))
     for line, ase in zip(lines, ase_series):
         line.set_ydata(ase)  # Update the plot data
@@ -94,7 +94,7 @@ slider_width = 0.2
 vertical_spacing = 0.04
 
 # Initial simulation to get the starting data
-points = simulate(SYNAPSES, THRESHOLDS, JUNCTIONS)
+points = simulate(SYNAPSES, BIASES, JUNCTIONS)
 ase_series = list(zip(*points))
 time_series = [x * dt for x in range(1000)]
 
@@ -110,7 +110,7 @@ for i, (ax, ase) in enumerate(zip(axs, ase_series)):
     ax.set_title(f"{names[i] + (str('L') if i%2==0 else str('R'))} Over Time")
     ax.legend()
 
-# Add sliders for SYNAPSES and THRESHOLDS
+# Add sliders for SYNAPSES and BIASES
 syn_sliders = []
 thr_sliders = []
 jnc_sliders = []
@@ -119,12 +119,12 @@ for i in range(len(SYNAPSES)):
     axsyn = plt.axes([slider_position, 1 - (slider_height + vertical_spacing) * (i + 1), slider_width, slider_height], facecolor='lightgoldenrodyellow')
     syn_sliders.append(Slider(axsyn, f'Weight {i + 1}', -15.0, 15.0, valinit=SYNAPSES[i]))
 
-for i in range(len(THRESHOLDS)):
+for i in range(len(BIASES)):
     axthr = plt.axes([slider_position, 1 - (slider_height + vertical_spacing) * (len(SYNAPSES) + i + 1), slider_width, slider_height], facecolor='lightsteelblue')
-    thr_sliders.append(Slider(axthr, f'Threshold {i + 1}', -15.0, 15.0, valinit=THRESHOLDS[i]))
+    thr_sliders.append(Slider(axthr, f'Bias {i + 1}', -15.0, 15.0, valinit=BIASES[i]))
 
 for i in range(len(JUNCTIONS)):
-    axjnc = plt.axes([slider_position, 1 - (slider_height + vertical_spacing) * (len(SYNAPSES) + len(THRESHOLDS) + i + 1), slider_width, slider_height], facecolor='lightsteelblue')
+    axjnc = plt.axes([slider_position, 1 - (slider_height + vertical_spacing) * (len(SYNAPSES) + len(BIASES) + i + 1), slider_width, slider_height], facecolor='lightsteelblue')
     jnc_sliders.append(Slider(axjnc, f'Junction {i + 1}', 0.0, 2.0, valinit=JUNCTIONS[i]))
 
 

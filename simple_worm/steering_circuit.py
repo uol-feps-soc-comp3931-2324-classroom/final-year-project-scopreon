@@ -9,24 +9,24 @@ def sigmoid(x):
 
 # Neuron class
 class Neuron:
-    def __init__(self, threshold, time_const) -> None:
+    def __init__(self, bias_term, time_const) -> None:
         self.potential = 0
-        self.threshold = threshold
+        self.bias_term = bias_term
         self.time_const = time_const
 
 # Sensory neuron
 class SensorNeuron(Neuron):
-    def __init__(self, threshold, time_const) -> None:
-        super().__init__(threshold, time_const)
+    def __init__(self, bias_term, time_const) -> None:
+        super().__init__(bias_term, time_const)
     def get_output(self):
-        return sigmoid(self.potential + self.threshold)
+        return sigmoid(self.potential + self.bias_term)
 
 # Interneuron
 class InterNeuron(Neuron):
-    def __init__(self, threshold, time_const) -> None:
-        super().__init__(threshold, time_const)
+    def __init__(self, bias_term, time_const) -> None:
+        super().__init__(bias_term, time_const)
     def get_output(self):
-        return sigmoid(self.potential + self.threshold)
+        return sigmoid(self.potential + self.bias_term)
 
 # Steering circuit and logic
 class SteeringCircuit:
@@ -40,9 +40,9 @@ class SteeringCircuit:
 
         self.dt = dt
 
-        self.ASE = [SensorNeuron(parameters.thresholds[0], parameters.time_consts[0]), SensorNeuron(parameters.thresholds[0], parameters.time_consts[0])]
-        self.AIY = [InterNeuron(parameters.thresholds[1], parameters.time_consts[1]), InterNeuron(parameters.thresholds[1], parameters.time_consts[1])]
-        self.AIZ = [InterNeuron(parameters.thresholds[2], parameters.time_consts[2]), InterNeuron(parameters.thresholds[2], parameters.time_consts[2])]
+        self.ASE = [SensorNeuron(parameters.bias_terms[0], parameters.time_consts[0]), SensorNeuron(parameters.bias_terms[0], parameters.time_consts[0])]
+        self.AIY = [InterNeuron(parameters.bias_terms[1], parameters.time_consts[1]), InterNeuron(parameters.bias_terms[1], parameters.time_consts[1])]
+        self.AIZ = [InterNeuron(parameters.bias_terms[2], parameters.time_consts[2]), InterNeuron(parameters.bias_terms[2], parameters.time_consts[2])]
 
         # weights coming out of Neuron
         self.ASE_w = parameters.synapses[0:2]

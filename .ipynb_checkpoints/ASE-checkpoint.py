@@ -5,11 +5,11 @@ import numpy as np
 
 # dt = 0.01
 # SYNAPSES = [0,0,0,0,0,0,0]
-# THRESHOLDS = [0,0,0,0,0]
+# bias_termS = [0,0,0,0,0]
 
-# params = SteeringParameters(SYNAPSES=SYNAPSES, THRESHOLDS=THRESHOLDS))
+# params = SteeringParameters(SYNAPSES=SYNAPSES, bias_termS=bias_termS))
 
-# print(params.synapses, params.thresholds)
+# print(params.synapses, params.bias_terms)
 
 # circuit = SteeringCircuit(params, dt)
 
@@ -57,11 +57,11 @@ from IPython.display import display
 # Initial parameters
 dt = 0.01
 SYNAPSES = [0, 0, 0, 0, 0, 0, 0]
-THRESHOLDS = [0, 0, 0, 0, 0]
+bias_termS = [0, 0, 0, 0, 0]
 
-# Function to update and plot based on current synapse and threshold values
+# Function to update and plot based on current synapse and bias_term values
 def update_plot(*args):
-    params = SteeringParameters(SYNAPSES=SYNAPSES, THRESHOLDS=THRESHOLDS)
+    params = SteeringParameters(SYNAPSES=SYNAPSES, bias_termS=bias_termS)
     circuit = SteeringCircuit(params, dt)
     points = []
 
@@ -81,18 +81,18 @@ def update_plot(*args):
     plt.legend()
     plt.show()
 
-# Create sliders for each synapse and threshold
+# Create sliders for each synapse and bias_term
 synapse_sliders = [widgets.IntSlider(min=-15, max=15, step=1, value=0) for _ in SYNAPSES]
-threshold_sliders = [widgets.IntSlider(min=-15, max=15, step=1, value=0) for _ in THRESHOLDS]
+bias_term_sliders = [widgets.IntSlider(min=-15, max=15, step=1, value=0) for _ in bias_termS]
 
 # Display sliders and set up their observers
 for i, slider in enumerate(synapse_sliders):
     display(slider)
     slider.observe(lambda change, index=i: synapse_sliders[index].set_trait('value', change['new']), names='value')
 
-for i, slider in enumerate(threshold_sliders):
+for i, slider in enumerate(bias_term_sliders):
     display(slider)
-    slider.observe(lambda change, index=i: threshold_sliders[index].set_trait('value', change['new']), names='value')
+    slider.observe(lambda change, index=i: bias_term_sliders[index].set_trait('value', change['new']), names='value')
 
 # Button to update the plot based on the current slider values
 update_button = widgets.Button(description="Update Plot")

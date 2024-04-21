@@ -58,7 +58,7 @@ def read_population():
         params = SteeringParameters(
             SYNAPSES=[row['s0'],row['s1'],row['s2'],row['s3'],row['s4']] + [0,0],
             JUNCTIONS=[row['j1'],row['j2']],
-            THRESHOLDS=[row['t0'],row['t1'],row['t2'],0,0],
+            bias_termS=[row['t0'],row['t1'],row['t2'],0,0],
             M=row['m'],
             N=row['n'],
         )
@@ -73,9 +73,9 @@ def write_population(population_steering_params):
         's2': [params.synapses[2] for params in population_steering_params],
         's3': [params.synapses[3] for params in population_steering_params],
         's4': [params.synapses[4] for params in population_steering_params],
-        't0': [params.thresholds[0] for params in population_steering_params],
-        't1': [params.thresholds[1] for params in population_steering_params],
-        't2': [params.thresholds[2] for params in population_steering_params],
+        't0': [params.bias_terms[0] for params in population_steering_params],
+        't1': [params.bias_terms[1] for params in population_steering_params],
+        't2': [params.bias_terms[2] for params in population_steering_params],
         'j1': [params.junctions[0] for params in population_steering_params],
         'j2': [params.junctions[1] for params in population_steering_params],
         'm':  [params.M for params in population_steering_params],
@@ -106,7 +106,7 @@ def mutate(child):
     if 0 <= number < 5:
         child.synapses[number] = random.random() * 30 - 15
     if 5 <= number < 8:
-        child.thresholds[number - 5] = random.random() * 30 - 15
+        child.bias_terms[number - 5] = random.random() * 30 - 15
     if 8 <= number < 10:
         child.junctions[number - 8] = random.random() * 2
     if number == 10:
@@ -125,8 +125,8 @@ def crossover(parent1, parent2):
     child2.synapses[:s] = parent1.synapses[:s]
 
     t = random.randint(1,2)
-    child1.thresholds[:t] = parent2.thresholds[:t]
-    child2.thresholds[:t] = parent1.thresholds[:t]
+    child1.bias_terms[:t] = parent2.bias_terms[:t]
+    child2.bias_terms[:t] = parent1.bias_terms[:t]
 
     j = random.randint(0,1)
     child1.junctions[j] = parent2.junctions[j]

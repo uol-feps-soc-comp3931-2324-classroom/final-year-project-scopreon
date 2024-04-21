@@ -17,8 +17,8 @@ SP_DEFAULT_JUNCTIONS = np.array([0,0])
 # Default values for time constants, range [0,+inf]
 SP_DEFAULT_TIME_CONSTANTS = np.array([0.05,0.1,0.1,0.1,0.1])
 
-# Default values for thresholds, range [-15,15]
-SP_DEFAULT_THRESHOLDS = np.array([0,0,0,0,0])
+# Default values for biases, range [-15,15]
+SP_DEFAULT_BIASES = np.array([0,0,0,0,0])
 
 # Contains the steering parameters for the steering circuit
 class SteeringParameters:
@@ -29,7 +29,7 @@ class SteeringParameters:
         
         try:
             self.synapses = [float(config['SYNAPSES'][f'synapse_{i}']) for i in range(len(config['SYNAPSES']))]
-            self.thresholds = [float(config['THRESHOLDS'][f'threshold_{i}']) for i in range(len(config['THRESHOLDS']))]
+            self.biases = [float(config['BIASES'][f'bias_{i}']) for i in range(len(config['BIAS']))]
             self.junctions = [float(config['JUNCTIONS'][f'junction_{i}']) for i in range(len(config['JUNCTIONS']))]
 
             if 'TIMES' in config:
@@ -48,7 +48,7 @@ class SteeringParameters:
     def save_parameters(self, filename='parameters'):
         config = configparser.ConfigParser()
         config['SYNAPSES'] = {f'synapse_{i}': str(val) for i, val in enumerate(self.synapses)}
-        config['THRESHOLDS'] = {f'threshold_{i}': str(val) for i, val in enumerate(self.thresholds)}
+        config['BIASES'] = {f'bias_{i}': str(val) for i, val in enumerate(self.biases)}
         config['JUNCTIONS'] = {f'junction_{i}': str(val) for i, val in enumerate(self.junctions)}
 
         config['TIMES'] = {'M': str(self.M), 'N': str(self.N)}
@@ -65,21 +65,39 @@ class SteeringParameters:
         SYNAPSES = SP_DEFAULT_SYNAPSES,
         JUNCTIONS = SP_DEFAULT_JUNCTIONS,
         TIME_CONSTANTS = SP_DEFAULT_TIME_CONSTANTS,
-        THRESHOLDS=SP_DEFAULT_THRESHOLDS,
+        BIASES=SP_DEFAULT_BIASES,
         filename=None,
         TEMP_VAR=None
     ) -> None:
         if filename is not None:
             self.load_parameters(filename)
         else:
-            self.thresholds=THRESHOLDS
+            self.biases=BIASES
             self.synapses=SYNAPSES
             self.junctions=JUNCTIONS
             self.M=M
             self.N=N
 
         self.time_consts=TIME_CONSTANTS
+        # quick hotfix a variable if neede
         self.temp_var = TEMP_VAR
+
+        if M < 0.1 or M > 4.2:
+            raise ValueError(f"Invalid value {M} for M. Should be in range [0.1,4.2]") 
+        if N < 0.1 or N > 4.2:
+            raise ValueError(f"Invalid value {M} for N. Should be in range [0.1,4.2]") 
+        for S in self.synapses:
+            if S < -15 or S > 15:
+                raise ValueError(f"Invalid value {S} for synapse. Should be in range [-15,15]") 
+        for B in self.biases:
+            if B < -15 or B > 15:
+                raise ValueError(f"Invalid value {B} for bias. Should be in range [-15,15]") 
+        for J in self.junctions:
+            if J < -15 or J > 15:
+                raise ValueError(f"Invalid value {J} for junction. Should be in range [0,2]") 
+        for T in self.time_consts:
+            if T < 0:
+                raise ValueError(f"Invalid value {T} for time constant. Should be in range [0,+inf]") 
 
     # Creating a deep copy of SteeringParameters
     def copy(self):
