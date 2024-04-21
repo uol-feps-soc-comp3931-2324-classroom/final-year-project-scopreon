@@ -29,7 +29,7 @@ class SteeringParameters:
         
         try:
             self.synapses = [float(config['SYNAPSES'][f'synapse_{i}']) for i in range(len(config['SYNAPSES']))]
-            self.biases = [float(config['BIASES'][f'bias_{i}']) for i in range(len(config['BIAS']))]
+            self.biases = [float(config['BIASES'][f'bias_{i}']) for i in range(len(config['BIASES']))]
             self.junctions = [float(config['JUNCTIONS'][f'junction_{i}']) for i in range(len(config['JUNCTIONS']))]
 
             if 'TIMES' in config:
@@ -54,7 +54,7 @@ class SteeringParameters:
         config['TIMES'] = {'M': str(self.M), 'N': str(self.N)}
         with open(f'{filename}.ini', 'w') as configfile:
             config.write(configfile)
-        print("Parameters saved to parameters.ini")
+        print(f"Parameters saved to {filename}.ini")
 
     # Creating steeing parametrs. Use default parameters if not defined
     # Can specify parameters individually or from a file

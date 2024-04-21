@@ -14,7 +14,7 @@ class Environment:
     
     def __str__(self):
         # Print representation of the Environment object, showing parameter names
-        print(self.parameters.keys())
+        return str(self.parameters.keys())
 
     # Retrieve values for all parameters at given coordinates or time
     def add_parameter(self, name, func):
@@ -47,7 +47,7 @@ class Environment:
         elif direction == GradientDirection.Y:
             self.parameters[name] = lambda x, y: y * gradient
         else:
-            print("Invalid direction, choose X or Y")
+            raise ValueError("Invalid direction, choose X or Y")
 
     def add_linear_conical_2d_gradient(self, name, x1, y1, a):
         # Add a conical gradient function centered at (x1, y1) with a scaling factor a.

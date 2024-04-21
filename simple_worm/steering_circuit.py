@@ -40,9 +40,9 @@ class SteeringCircuit:
 
         self.dt = dt
 
-        self.ASE = [SensorNeuron(parameters.bias_terms[0], parameters.time_consts[0]), SensorNeuron(parameters.bias_terms[0], parameters.time_consts[0])]
-        self.AIY = [InterNeuron(parameters.bias_terms[1], parameters.time_consts[1]), InterNeuron(parameters.bias_terms[1], parameters.time_consts[1])]
-        self.AIZ = [InterNeuron(parameters.bias_terms[2], parameters.time_consts[2]), InterNeuron(parameters.bias_terms[2], parameters.time_consts[2])]
+        self.ASE = [SensorNeuron(parameters.biases[0], parameters.time_consts[0]), SensorNeuron(parameters.biases[0], parameters.time_consts[0])]
+        self.AIY = [InterNeuron(parameters.biases[1], parameters.time_consts[1]), InterNeuron(parameters.biases[1], parameters.time_consts[1])]
+        self.AIZ = [InterNeuron(parameters.biases[2], parameters.time_consts[2]), InterNeuron(parameters.biases[2], parameters.time_consts[2])]
 
         # weights coming out of Neuron
         self.ASE_w = parameters.synapses[0:2]

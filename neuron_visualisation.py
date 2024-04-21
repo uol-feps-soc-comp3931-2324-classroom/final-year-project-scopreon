@@ -51,8 +51,6 @@ def simulate(SYNAPSES, BIASES, JUNCTIONS):
     points = []
     for x in range(1000):
         value = 20 if 300 < x < 500 else 0
-        # # value = math.sin(x*0.02) * 10 + 10
-        # value = x
         circuit.update_state(concentration=value)
         points.append((circuit.ASE[0].get_output(), circuit.ASE[1].get_output(), circuit.AIY[0].get_output(), circuit.AIY[1].get_output(), circuit.AIZ[0].get_output(), circuit.AIZ[1].get_output()))
     return points
@@ -107,8 +105,8 @@ for i, (ax, ase) in enumerate(zip(axs, ase_series)):
     ax.set_xlabel('Time (s)')
     ax.set_ylabel('Output')
     ax.set_ylim(0,1)
-    ax.set_title(f"{names[i] + (str('L') if i%2==0 else str('R'))} Over Time")
-    ax.legend()
+    ax.set_title(f"{names[i] + (str('L') if i%2==0 else str('R'))}")
+    # ax.legend()
 
 # Add sliders for SYNAPSES and BIASES
 syn_sliders = []
@@ -128,10 +126,10 @@ for i in range(len(JUNCTIONS)):
     jnc_sliders.append(Slider(axjnc, f'Junction {i + 1}', 0.0, 2.0, valinit=JUNCTIONS[i]))
 
 
-plt.subplots_adjust(left=0.1, bottom=0.35, right=0.65, top=0.95, wspace=0.4, hspace=0.5)  # Adjust spacing  # Adjust layout to make room for the button
+plt.subplots_adjust(left=0.1, bottom=0.35, right=0.6, top=0.95, wspace=0.3, hspace=0.7)  # Adjust spacing  # Adjust layout to make room for the button
 
 button_ax = plt.axes([0.1, 0.05, 0.1, 0.075])  # New position for 'Save' button
-button = Button(button_ax, 'Save', color='lightgoldenrodyellow', hovercolor='0.5')
+button = Button(button_ax, 'Save to .ini', color='lightgoldenrodyellow', hovercolor='0.5')
 button.on_clicked(save_parameters)
 
 csv_button_ax = plt.axes([0.3, 0.05, 0.1, 0.075])  # New position for 'Save to CSV' button
