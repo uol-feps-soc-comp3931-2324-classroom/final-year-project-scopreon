@@ -193,10 +193,6 @@ def multiple_worm_path(worms: [str, FrameSequenceNumpy], outname = "midline", xl
 
 # Note: 'FrameSequenceNumpy' should be replaced with the appropriate type for FS if needed.
 
-
-import pandas as pd
-import matplotlib.pyplot as plt
-
 def plot_neurons(filename='filename'):
     # Load the data from CSV
     df = pd.read_csv('neuron_data.csv')
