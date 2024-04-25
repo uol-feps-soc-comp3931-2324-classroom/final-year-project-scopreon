@@ -40,7 +40,6 @@ class NeuralParameters:
         MUSCLE_START=NP_DEFAULT_MUSCLE_START,
         MUSCLE_LOSS=NP_DEFAULT_MUSCLE_LOSS,
         PF_UNITS=NP_DEFAULT_PF_UNITS,
-        USE_HEAD_NECK_CIRCUIT=NP_DEFAULT_USE_HEAD_NECK_CIRCUIT,
         STEERING_PARAMETERS=NP_DEFAULT_STEERING_PARAMETERS,
         STEERING=NP_DEFAULT_STEERING,
         TEMP_VAR=None
@@ -56,7 +55,6 @@ class NeuralParameters:
         self.muscle_start = MUSCLE_START
         self.muscle_loss = MUSCLE_LOSS
         self.pf_units = PF_UNITS
-        self.head_neck_used = USE_HEAD_NECK_CIRCUIT
         self.steering_parameters = STEERING_PARAMETERS
         self.steering=STEERING
         self.temp_var = TEMP_VAR

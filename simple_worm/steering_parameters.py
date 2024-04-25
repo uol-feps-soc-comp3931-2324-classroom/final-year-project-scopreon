@@ -40,9 +40,11 @@ class SteeringParameters:
                 self.N = SP_DEFAULT_N
 
             print("Parameters loaded from", filename)
+            return True
             # Optionally, update any UI elements like sliders here based on the loaded values
         except KeyError as e:
             print("Error: Invalid configuration file or missing sections.")
+            return False
     
     # Save parameters to filename +.ini
     def save_parameters(self, filename='parameters'):
@@ -69,9 +71,7 @@ class SteeringParameters:
         filename=None,
         TEMP_VAR=None
     ) -> None:
-        if filename is not None:
-            self.load_parameters(filename)
-        else:
+        if filename is None or not self.load_parameters(filename):
             self.biases=BIASES
             self.synapses=SYNAPSES
             self.junctions=JUNCTIONS

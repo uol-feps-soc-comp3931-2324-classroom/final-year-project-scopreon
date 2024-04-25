@@ -65,11 +65,11 @@ for l in simulation_lengths:
     print(f'Simulating length = {l}')
     times = time.time()
     myworm = Worm(N=48, dt=0.01, neural_control=True, NP = NeuralParameters(TEMP_VAR=[0,0], STEERING_PARAMETERS=steering_params, STEERING=True, AVB = 0.405), quiet = True, environment=env1 )
-    myworm.solve(l, MP=MaterialParametersFenics(), reset=True, concentration_center=[0,45]).to_numpy()
+    myworm.solve(l, MP=MaterialParametersFenics(), reset=True).to_numpy()
 
     myworm = Worm(N=48, dt=0.01, neural_control=True, NP = NeuralParameters(TEMP_VAR=[0,0], STEERING_PARAMETERS=steering_params, STEERING=True, AVB = 0.405), quiet = True, environment=env2 )
-    myworm.solve(l, MP=MaterialParametersFenics(), reset=True, concentration_center=[45,0]).to_numpy()
+    myworm.solve(l, MP=MaterialParametersFenics(), reset=True).to_numpy()
 
     myworm = Worm(N=48, dt=0.01, neural_control=True, NP = NeuralParameters(TEMP_VAR=[0,0], STEERING_PARAMETERS=steering_params, STEERING=True, AVB = 0.405), quiet = True, environment=env3 )
-    myworm.solve(l, MP=MaterialParametersFenics(), reset=True, concentration_center=[0,-45]).to_numpy()
+    myworm.solve(l, MP=MaterialParametersFenics(), reset=True).to_numpy()
     print(f'For simulation length = {l}. T = {time.time()-times}')

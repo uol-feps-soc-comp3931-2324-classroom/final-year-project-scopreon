@@ -94,17 +94,17 @@ for param in params:
     lowest_score = 1
 
     myworm = Worm(N=48, dt=0.01, neural_control=True, NP = NeuralParameters(TEMP_VAR=[0,0], STEERING_PARAMETERS=steering_params, STEERING=True, AVB = 0.405), quiet = True, environment=env1 )
-    seq.append([f'Up', myworm.solve(15, MP=MaterialParametersFenics(), reset=True, concentration_center=[0,45]).to_numpy()])
+    seq.append([f'Up', myworm.solve(15, MP=MaterialParametersFenics(), reset=True)])
 
     lowest_score = min(lowest_score, myworm.score)
 
     myworm = Worm(N=48, dt=0.01, neural_control=True, NP = NeuralParameters(TEMP_VAR=[0,0], STEERING_PARAMETERS=steering_params, STEERING=True, AVB = 0.405), quiet = True, environment=env2 )
-    seq.append([f'Forward', myworm.solve(15, MP=MaterialParametersFenics(), reset=True, concentration_center=[45,0]).to_numpy()])
+    seq.append([f'Forward', myworm.solve(15, MP=MaterialParametersFenics(), reset=True)])
 
     lowest_score = min(lowest_score, myworm.score)
 
     myworm = Worm(N=48, dt=0.01, neural_control=True, NP = NeuralParameters(TEMP_VAR=[0,0], STEERING_PARAMETERS=steering_params, STEERING=True, AVB = 0.405), quiet = True, environment=env3 )
-    seq.append([f'Down', myworm.solve(15, MP=MaterialParametersFenics(), reset=True, concentration_center=[0,-45]).to_numpy()])
+    seq.append([f'Down', myworm.solve(15, MP=MaterialParametersFenics(), reset=True)])
 
     lowest_score = min(lowest_score, myworm.score)
 
