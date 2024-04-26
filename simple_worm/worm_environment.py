@@ -36,7 +36,7 @@ class Environment:
         # Compute each parameter using the respective stored functions and the current coordinates/time
         return {name: func(**params) for name, func in self.parameters.items()}
 
-    def get_parameter_func(self, name):
+    def get_variable_func(self, name):
          # Retrieve the function associated with a specific parameter name
         return self.parameters[name]
     
@@ -52,3 +52,6 @@ class Environment:
     def add_linear_conical_2d_gradient(self, name, x1, y1, a):
         # Add a conical gradient function centered at (x1, y1) with a scaling factor a.
         self.parameters[name] = lambda x, y: -a * np.sqrt((x1 - x)**2 + (y1 - y)**2)
+    
+    def clear(self):
+        self.__init__()

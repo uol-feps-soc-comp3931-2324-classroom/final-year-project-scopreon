@@ -186,8 +186,6 @@ class NeuralModel:
             else:
                 self.state[i, 1] = 0
         
-        # val = self.temp_var
-        val = 0
         for i in range(self.nseg):
             if i < 8 and self.steering:    
                 self.v_neuron[i, 0] = self.nmj_weight[i]*self.state[int(i*(self.n_units/self.nseg)), 0] - self.nmj_weight[i]*self.state[int(i*(self.n_units/self.nseg)), 1] + self.steering_circuit.AIZ_w[0] * self.steering_circuit.AIZ[0].get_output() + self.steering_circuit.AIZ_w[1] * self.steering_circuit.AIZ[1].get_output()
@@ -195,7 +193,6 @@ class NeuralModel:
             else:
                 self.v_neuron[i, 0] = self.nmj_weight[i]*self.state[int(i*(self.n_units/self.nseg)), 0] - self.nmj_weight[i]*self.state[int(i*(self.n_units/self.nseg)), 1]
                 self.v_neuron[i, 1] = self.nmj_weight[i] * self.state[int(i * (self.n_units / self.nseg)), 1] - self.nmj_weight[i] * self.state[int(i * (self.n_units / self.nseg)), 0]
-        # print(self.v_neuron)
 
 
     def update_stretch_receptors(self, alpha):
@@ -213,7 +210,7 @@ class NeuralModel:
                 self.l_sr[current_seg, 1] = theta * (r + self.width[current_seg])
             current_seg += 1
 
-	#calculate input to stretch receptors
+	    # calculate input to stretch receptors
         for i in range(self.nseg):
             if self.l_sr[i][0] > l_seg:
                 compensate = 0.8
@@ -248,14 +245,3 @@ class NeuralModel:
             self.update_steering(env)
         self.update_neurons()
         return self.update_muscles(alpha)
-
-
-# bottom n segments will be assigned this circuit
-
-# this will contain the circuit for the worm, used for turning
-class HeadAndNeckCircuit(NeuralModel):
-    # update ASE
-    # update Send to AIY
-    # AIZ
-    # Combine with stretch receptor etc
-    pass

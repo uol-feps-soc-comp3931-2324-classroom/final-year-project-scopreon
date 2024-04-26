@@ -7,31 +7,26 @@ from simple_worm.neural_parameters import NeuralParameters
 
 
 seq = []
-myworm = Worm(N=48, dt=0.001, neural_control=True, NP = NeuralParameters(TEMP_VAR=[1]))
-seq.append(["Wormle", myworm.solve(1, MP=MaterialParametersFenics(), reset=True).to_numpy()])
-multiple_FS_to_clip(seq, outname="fix_timestep/test2", xlim=[-1,5])
-# multiple_worm_path(seq,outname='test')
+worm = Worm(N=48, dt=0.001, neural_control=True, NP = NeuralParameters())
+seq.append(["Wormle", worm.solve(10, MP=MaterialParametersFenics(), reset=True).to_numpy()])
+multiple_FS_to_clip(seq, outname="fix_timestep/0_001", xlim=[-1,5])
 
-# seq = []
-# myworm = Worm(N=48, dt=0.01, neural_control=True, NP = NeuralParameters(TEMP_VAR=[1]))
-# seq.append(["Wormle", myworm.solve(2, MP=MaterialParametersFenics(), reset=True).to_numpy()])
-# # multiple_FS_to_clip(seq, outname="fix_timestep/", xlim=[-1,5])
-# multiple_worm_path(seq,outname='2')
+seq = []
+worm = Worm(N=48, dt=0.002, neural_control=True, NP = NeuralParameters())
+seq.append(["Wormle", worm.solve(10, MP=MaterialParametersFenics(), reset=True).to_numpy()])
+multiple_FS_to_clip(seq, outname="fix_timestep/0_002", xlim=[-1,5])
 
-# seq = []
-# myworm = Worm(N=48, dt=0.01, neural_control=True, NP = NeuralParameters(TEMP_VAR=[0.1]))
-# seq.append(["Wormle", myworm.solve(2, MP=MaterialParametersFenics(), reset=True).to_numpy()])
-# # multiple_FS_to_clip(seq, outname="fix_timestep/", xlim=[-1,5])
-# multiple_worm_path(seq,outname='3')
+seq = []
+worm = Worm(N=48, dt=0.01, neural_control=True, NP = NeuralParameters())
+seq.append(["Wormle", worm.solve(10, MP=MaterialParametersFenics(), reset=True).to_numpy()])
+multiple_FS_to_clip(seq, outname="fix_timestep/0_01", xlim=[-1,5])
 
-# seq = []
-# myworm = Worm(N=48, dt=0.01, neural_control=True, NP = NeuralParameters(TEMP_VAR=[0.01]))
-# seq.append(["Wormle", myworm.solve(2, MP=MaterialParametersFenics(), reset=True).to_numpy()])
-# # multiple_FS_to_clip(seq, outname="fix_timestep/", xlim=[-1,5])
-# multiple_worm_path(seq,outname='4')
+seq = []
+worm = Worm(N=48, dt=0.1, neural_control=True, NP = NeuralParameters())
+seq.append(["Wormle", worm.solve(10, MP=MaterialParametersFenics(), reset=True).to_numpy()])
+multiple_FS_to_clip(seq, outname="fix_timestep/0_1", xlim=[-1,5])
 
-# seq = []
-# myworm = Worm(N=48, dt=0.01, neural_control=True, NP = NeuralParameters(TEMP_VAR=[0.001]))
-# seq.append(["Wormle", myworm.solve(2, MP=MaterialParametersFenics(), reset=True).to_numpy()])
-# # multiple_FS_to_clip(seq, outname="fix_timestep/", xlim=[-1,5])
-# multiple_worm_path(seq,outname='5')
+seq = []
+worm = Worm(N=48, dt=1, neural_control=True, NP = NeuralParameters())
+seq.append(["Wormle", worm.solve(10, MP=MaterialParametersFenics(), reset=True).to_numpy()])
+multiple_FS_to_clip(seq, outname="fix_timestep/1", xlim=[-1,5])

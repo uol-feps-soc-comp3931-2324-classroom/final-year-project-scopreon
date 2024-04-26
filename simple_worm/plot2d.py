@@ -6,6 +6,7 @@ from simple_worm.worm import Worm
 import matplotlib.pyplot as plt
 import statistics
 from matplotlib.animation import FFMpegWriter
+from matplotlib.colors import LinearSegmentedColormap
 
 import csv
 
@@ -19,16 +20,11 @@ def plot_midline(FS, dt = 0.001, speed = 1, xlim = [-1,3], ylim = [-3,1]):
     i = 0
     skip = (1/(10 * dt))*speed #10fps
     for f in FS:
-        # if i % skip == 0:
         plt.cla()
         plt.xlim(xlim[0], xlim[1])
         plt.ylim(ylim[0], ylim[1])
         plt.plot(f.x[0], f.x[2])
-        
-        # print(type(f.x[0]), f.x[0])
-        # print(type(f.x[2]), f.x[2])
         plt.pause(0.1)
-        # i += 1
     plt.show()
 
 #Saves a csv of the midline data
@@ -49,7 +45,6 @@ def clip_midline_csv(sourcename = "midline", outname = "midline", dt = 0.001, sp
     with open(sourcename + '.csv', 'r', newline='') as csvfile:
         csvreader = csv.reader(csvfile)
         data = np.float_(list(csvreader))
-    # data = parse_csv_data(sourcename + '.csv')
     print(data)
     fig = plt.figure()
     plot, = plt.plot([],[],'k-')
@@ -105,13 +100,51 @@ def csv_to_frequency(name = "alpha", dt=0.001):
     print(ts)
     return statistics.mean(ts)
 
-from matplotlib.colors import LinearSegmentedColormap
+# Draws an image of the path the worm took
+def save_path_data(worms: [str, FrameSequenceNumpy], outname="path"):
+    data = []
+    for i in range(len(worms[0][1])):
+        row = ()
+        for worm in worms: # stores the frame sequence
+            row += (np.float_(worm[1][i].x[0][0]),np.float_(worm[1][i].x[2][0]))
+        data.append(row)
+    
+    with open(f'{outname}.csv', 'w', newline='') as csvfile:
+        writer = csv.writer(csvfile)
+        for row in data:
+            writer.writerow(row)
+
+# Draws an image of multiple paths of worms
+def multiple_worm_path(worms: [str, FrameSequenceNumpy], outname = "midline", xlim = [-1,3], ylim = [-3,1]):
+    data=[[] for _ in range(len(worms))]
+    for i, (name, FS) in enumerate(worms):
+        for f in FS:
+            data[i].append((np.float_(f.x[0][0]),np.float_(f.x[2][0])))
+    
+    plt.figure()
+    for i, line in enumerate(data):
+    # Unpack the points into x and y coordinates
+        x, y = zip(*line)
+        plt.plot(x, y, label=worms[i][0]) 
+    
+    plt.xlim(xlim[0], xlim[1])  # Set limits for x-axis
+    plt.ylim(ylim[0], ylim[1])  # Set limits for y-axis
+    plt.legend()
+    plt.title('Line Shapes Plot')
+    plt.xlabel('X axis')
+    plt.ylabel('Y axis')
+
+    plt.savefig(f'{outname}')
+    plt.close()
+
+
+# Plots multiple worms in a video
 def multiple_FS_to_clip(worms, outname="midline", dt=0.001, speed=1, xlim=[-1,3], ylim=[-3,1], concentration_func=None):
     fig, ax = plt.subplots()
 
-    colors = "bgrcmk"
+    colormap = plt.cm.get_cmap('viridis', len(worms))
 
-    plots = [ax.plot([], [], 'k-', color='#' + str(w % 10) * 6, label=f"{w}: {worms[w][0]}")[0] for w in range(len(worms))]
+    plots = [ax.plot([], [], '-', color = colormap(i), label=f"{w}: {worms[w][0]}")[0] for w in range(len(worms))]
     labels = [ax.text(0, 0, str(i), verticalalignment='bottom', horizontalalignment='left') for i in range(len(worms))]
 
     data = [[] for _ in range(len(worms))]
@@ -147,55 +180,10 @@ def multiple_FS_to_clip(worms, outname="midline", dt=0.001, speed=1, xlim=[-1,3]
 
             writer.grab_frame()
 
-def save_path_data(worms: [str, FrameSequenceNumpy], outname="path"):
-    data = []
-    for i in range(len(worms[0][1])):
-        row = ()
-        for worm in worms: # stores the frame sequence
-            row += (np.float_(worm[1][i].x[0][0]),np.float_(worm[1][i].x[2][0]))
-        data.append(row)
-    
-    # print(data)
-
-    with open(f'{outname}.csv', 'w', newline='') as csvfile:
-        writer = csv.writer(csvfile)
-        for row in data:
-            writer.writerow(row)
-
-# draws the path of the worms, changes window size dynamically
-def multiple_worm_path(worms: [str, FrameSequenceNumpy], outname = "midline", xlim = [-1,3], ylim = [-3,1]):
-    data=[[] for _ in range(len(worms))]
-    for i, (name, FS) in enumerate(worms):
-        for f in FS:
-            data[i].append((np.float_(f.x[0][0]),np.float_(f.x[2][0])))
-    
-    plt.figure()
-    for i, line in enumerate(data):
-    # Unpack the points into x and y coordinates
-        x, y = zip(*line)
-        plt.plot(x, y, label=worms[i][0]) 
-    
-    # plt.set_aspect('equal', adjustable='box')
-    plt.xlim(xlim[0], xlim[1])  # Set limits for x-axis
-    plt.ylim(ylim[0], ylim[1])  # Set limits for y-axis
-    plt.legend()
-    plt.title('Line Shapes Plot')
-    plt.xlabel('X axis')
-    plt.ylabel('Y axis')
-
-    # Show the plot
-    # plt.show()
-
-    # Save the plot to a file
-
-    plt.savefig(f'{outname}')
-    plt.close()
-
-# Note: 'FrameSequenceNumpy' should be replaced with the appropriate type for FS if needed.
-
-def plot_neurons(filename='filename'):
+# Plot the neural data from a CSV file
+def plot_neurons(data_file = 'neuron_data.csv',filename='filename'):
     # Load the data from CSV
-    df = pd.read_csv('neuron_data.csv')
+    df = pd.read_csv(data_file)
 
     # Define the figure size and grid layout
     plt.figure(figsize=(20, 10))

@@ -154,41 +154,41 @@ def simulate_worm(steering_params, worm_id):
     lowest_score = 1
 
     # ----WORM CENTER ANGLE pi/2----
-    myworm = Worm(N=48, dt=0.01, neural_control=True, NP = NeuralParameters(TEMP_VAR=[0,0], STEERING_PARAMETERS=steering_params, STEERING=True, AVB = 0.405), quiet = True, environment=env1)
+    worm = Worm(N=48, dt=0.01, neural_control=True, NP = NeuralParameters(STEERING_PARAMETERS=steering_params, STEERING=True, AVB = 0.405), quiet = True, environment=env1)
     score = 1
-    for frame in myworm.solve(15, MP=MaterialParametersFenics(), reset=True).to_numpy():
+    for frame in worm.solve(15, MP=MaterialParametersFenics(), reset=True).to_numpy():
         a = np.array([0,45])
         b = np.array([frame.x()[0][0], frame.x()[2][0]])
 
-    # Calculate the angle in radians
-    angle_rad = np.arccos(np.dot(a, b) / (np.linalg.norm(a) * np.linalg.norm(b)))
-    score -= angle_rad / (1500 * np.pi)
+        # Calculate the angle in radians
+        angle_rad = np.arccos(np.dot(a, b) / (np.linalg.norm(a) * np.linalg.norm(b)))
+        score -= angle_rad / (1500 * np.pi)
     lowest_score = min(lowest_score, score)
     # -------------END-------------
     
     # -----WORM CENTER ANGLE 0-----
-    myworm = Worm(N=48, dt=0.01, neural_control=True, NP = NeuralParameters(TEMP_VAR=[0,0], STEERING_PARAMETERS=steering_params, STEERING=True, AVB = 0.405), quiet = True, environment=env2)
+    worm = Worm(N=48, dt=0.01, neural_control=True, NP = NeuralParameters( STEERING_PARAMETERS=steering_params, STEERING=True, AVB = 0.405), quiet = True, environment=env2)
     score = 1
-    for frame in myworm.solve(15, MP=MaterialParametersFenics(), reset=True).to_numpy():
+    for frame in worm.solve(15, MP=MaterialParametersFenics(), reset=True).to_numpy():
         a = np.array([45,0])
         b = np.array([frame.x()[0][0], frame.x()[2][0]])
 
-    # Calculate the angle in radians
-    angle_rad = np.arccos(np.dot(a, b) / (np.linalg.norm(a) * np.linalg.norm(b)))
-    score -= angle_rad / (1500 * np.pi)
+        # Calculate the angle in radians
+        angle_rad = np.arccos(np.dot(a, b) / (np.linalg.norm(a) * np.linalg.norm(b)))
+        score -= angle_rad / (1500 * np.pi)
     lowest_score = min(lowest_score, score)
     # -------------END-------------
 
     # ---WORM CENTER ANGLE -pi/2---
-    myworm = Worm(N=48, dt=0.01, neural_control=True, NP = NeuralParameters(TEMP_VAR=[0,0], STEERING_PARAMETERS=steering_params, STEERING=True, AVB = 0.405), quiet = True, environment=env3)
+    worm = Worm(N=48, dt=0.01, neural_control=True, NP = NeuralParameters( STEERING_PARAMETERS=steering_params, STEERING=True, AVB = 0.405), quiet = True, environment=env3)
     score = 1
-    for frame in myworm.solve(15, MP=MaterialParametersFenics(), reset=True).to_numpy():
+    for frame in worm.solve(15, MP=MaterialParametersFenics(), reset=True).to_numpy():
         a = np.array([0,45])
         b = np.array([frame.x()[0][0], frame.x()[2][0]])
 
-    # Calculate the angle in radians
-    angle_rad = np.arccos(np.dot(a, b) / (np.linalg.norm(a) * np.linalg.norm(b)))
-    score -= angle_rad / (1500 * np.pi)
+        # Calculate the angle in radians
+        angle_rad = np.arccos(np.dot(a, b) / (np.linalg.norm(a) * np.linalg.norm(b)))
+        score -= angle_rad / (1500 * np.pi)
     lowest_score = min(lowest_score, score)
     # -------------END-------------
 

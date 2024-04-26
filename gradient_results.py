@@ -9,19 +9,18 @@ from simple_worm.steering_parameters import SteeringParameters
 
 steering_params = SteeringParameters(filename='/Users/saulcoops/Documents/Uni/Year_3/individual-project/saulcooperman-fyp/runs/GOOD/params.ini')
 
-for K in [5,10,15]:
+for gradient in [0,1,2,3,4,5]:
     worms = []
     env = Environment()
-    # Concentration gradient of 5/mm was used
-    env.add_linear_2d_gradient('concentration',GradientDirection.Y, gradient=5)
+    env.add_linear_2d_gradient('concentration',GradientDirection.Y, gradient=gradient)
     worm = Worm(N=48, dt=0.01, neural_control=True, NP = NeuralParameters( STEERING_PARAMETERS=steering_params, STEERING=True, AVB = 0.405), quiet = True, environment=env)
-    worms.append(['positive',worm.solve(15, MP=MaterialParametersFenics(K=K), reset=True)])
+    worms.append(['positive',worm.solve(15, MP=MaterialParametersFenics(), reset=True)])
 
     env.clear()
     
-    env.add_linear_2d_gradient('concentration',GradientDirection.Y, gradient=-5)
+    env.add_linear_2d_gradient('concentration',GradientDirection.Y, gradient=-gradient)
     worm = Worm(N=48, dt=0.01, neural_control=True, NP = NeuralParameters( STEERING_PARAMETERS=steering_params, STEERING=True, AVB = 0.405), quiet = True, environment=env)
-    worms.append(['negative',worm.solve(15, MP=MaterialParametersFenics(K=K), reset=True)])
+    worms.append(['negativee',worm.solve(15, MP=MaterialParametersFenics(), reset=True)])
 
 
-    save_path_data(worms,f'K_{K}')
+    save_path_data(worms,f'gradient_{gradient}')

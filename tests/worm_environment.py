@@ -13,7 +13,7 @@ def test_add_and_get_parameter():
     env = Environment()
     env.add_parameter("temperature", lambda x, y: x + y)
     assert "temperature" in env.parameters
-    func = env.get_parameter_func("temperature")
+    func = env.get_variable_func("temperature")
     assert callable(func)
     assert func(x=5, y=3) == 8
 
