@@ -12,7 +12,8 @@ INVALID_INI_PATH = './invalid_parameters.ini'
 def setup_ini_files():
     # Setup a valid INI file
     with open(VALID_INI_PATH, 'w') as f:
-        f.write("""[SYNAPSES]
+        f.write("""
+[SYNAPSES]
 synapse_0 = 0.0
 synapse_1 = 0.0
 synapse_2 = 0.0
@@ -38,7 +39,8 @@ n = 0.2
 """)
     # Setup an invalid INI file
     with open(INVALID_INI_PATH, 'w') as f:
-        f.write("""[SYNAPSES]
+        f.write("""
+[SYNAPSES]
 synapse_0 = 20
 synapse_1 = 0.0
 synapse_2 = 0.0
@@ -75,7 +77,7 @@ def test_default_initialization():
     assert np.array_equal(params.biases, np.zeros(5))
     assert np.array_equal(params.junctions, np.zeros(2))
     assert np.array_equal(params.time_consts, np.array([0.05, 0.1, 0.1, 0.1, 0.1]))
-    assert params.M == 0.1 and params.N == 0.1
+    assert params.M == 4.2 and params.N == 4.2
 
 # Test loading parameters from a valid file
 def test_loading_valid_parameters():
@@ -99,6 +101,7 @@ def test_saving_parameters(tmpdir):
     save_path = tmpdir.join('test_save')  # Remove '.ini' here
     print("Saving parameters to:", str(save_path) + '.ini')  # Adjust debug output to reflect added extension
 
+    # Saving parameters to our temp directory
     params.save_parameters(filename=str(save_path))
 
     file_exists = os.path.exists(str(save_path) + '.ini')  # Check for existence of '.ini' file

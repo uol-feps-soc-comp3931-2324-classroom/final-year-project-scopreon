@@ -64,7 +64,7 @@ class SteeringCircuit:
 
         start_N = max(0, len_concentrations - int(self.parameters.N/self.dt))
         cN = np.mean(list(self.concentrations)[start_N:]) if start_N < len_concentrations else 0
-
+        
         # Update sensors based on the differential calculation
         differential = cN - cM
 

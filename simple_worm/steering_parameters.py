@@ -5,8 +5,8 @@ import configparser
 import copy
 
 # Default values for M and N, range [0.1,4.2]
-SP_DEFAULT_M = 0.1
-SP_DEFAULT_N = 0.1
+SP_DEFAULT_M = 4.2
+SP_DEFAULT_N = 4.2
 
 # Default values for synapses, range [-15,15]
 SP_DEFAULT_SYNAPSES = np.array([0,0,0,0,0,0,0])
