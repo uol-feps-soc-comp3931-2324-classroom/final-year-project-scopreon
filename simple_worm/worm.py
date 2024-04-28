@@ -167,11 +167,22 @@ class Worm:
             project_outputs: bool = False,
             solver_parameters: dict = {},
             savefile: str = "",
-            neural_savefile: str = "",
+            neural_savefile: str = None,
     ) -> FrameSequenceFenics:
         """
         Run the forward model for T seconds.
         """
+        if neural_savefile is not None:
+            neural_savefile += '.csv'
+            if os.path.exists(neural_savefile):
+                # If file exists, open it in write mode to clear its content
+                with open(neural_savefile, 'w') as file:
+                    pass  # Opening in 'w' mode and closing it clears the file
+            else:
+                # If file does not exist, create it by opening and closing it
+                with open(neural_savefile, 'w') as file:
+                    pass
+
         n_timesteps = int(T / self.dt)
         if reset:
             MP, F0, CS = self.initialise(MP, F0, CS, n_timesteps)
@@ -199,14 +210,21 @@ class Worm:
                 # Fetch neural data for writing
                 neural_data = self.neural.get_neural_data()
 
-                # Always open the file in write mode to overwrite existing data
-                with open(neural_savefile, 'w', newline='') as csvfile:
-                    writer = csv.writer(csvfile)
-                    # Write header row with the names of the data fields
-                    writer.writerow(['timestamp'] + list(neural_data.keys()))
-                    # Write the data row for the current timestamp
-                    # The row includes the timestamp and the data for each neuron
-                    writer.writerow([self.t] + [neural_data[name] for name in neural_data.keys()])
+                if neural_savefile is not None:
+                    with open(neural_savefile, 'a', newline='') as csvfile:
+                            writer = csv.writer(csvfile)
+                            
+                            # Check if the file is empty by seeking to the start and checking if there's any content
+                            csvfile.seek(0, os.SEEK_END)
+                            # If cursor is at 0, the file is empty
+                            if csvfile.tell() == 0:
+                                # Write header row with the names of the data fields if the file is empty
+                                writer.writerow(['timestamp'] + list(neural_data.keys()))
+                            
+                            # Write the data row for the current timestamp
+                            # The row includes the timestamp and the data for each neuron
+                            writer.writerow([self.t] + [neural_data[name] for name in neural_data.keys()])
+
 
 
                 C = ControlsNumpy(alpha=new_alpha, beta=np.zeros(self.N), gamma=np.zeros(self.N-1)).to_fenics(self)

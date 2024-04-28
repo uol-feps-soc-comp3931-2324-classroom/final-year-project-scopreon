@@ -20,7 +20,7 @@ for gradient in [0,1,2,3,4,5]:
     
     env.add_linear_2d_gradient('concentration',GradientDirection.Y, gradient=-gradient)
     worm = Worm(N=48, dt=0.01, neural_control=True, NP = NeuralParameters( STEERING_PARAMETERS=steering_params, STEERING=True, AVB = 0.405), quiet = True, environment=env)
-    worms.append(['negativee',worm.solve(15, MP=MaterialParametersFenics(), reset=True)])
+    worms.append(['negative',worm.solve(15, MP=MaterialParametersFenics(), reset=True)])
 
 
     save_path_data(worms,f'gradient_{gradient}')

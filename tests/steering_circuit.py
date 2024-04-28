@@ -4,16 +4,16 @@ from simple_worm.steering_circuit import SteeringCircuit, SensorNeuron, InterNeu
 import numpy as np
 
 # Using default values from steering parameters
-default_steering_dt = 0.01
-default_M = 4.2
-default_N = 4.2
+DEFAULT_STEEING_DT = 0.01
+DEFAULT_M = 4.2
+DEFAULT_N = 4.2
 
-ASE_buffer_size = int((default_M + default_N) / default_steering_dt)
+ASE_buffer_size = int((DEFAULT_M + DEFAULT_N) / DEFAULT_STEEING_DT)
 
 # Create default steering circuit with M and N
 @pytest.fixture
 def default_circuit():
-    return SteeringCircuit(default_steering_dt, SteeringParameters(M=default_M, N = default_N))
+    return SteeringCircuit(DEFAULT_STEEING_DT, SteeringParameters(M=DEFAULT_M, N = DEFAULT_N))
 
 # Tests for SensorNeuron
 @pytest.mark.parametrize("bias_term, time_const, expected_output", [
@@ -119,7 +119,7 @@ def test_neuron_output_stability_with_specific_time_constants(iterations, bias_t
     last_output = None
     for _ in range(iterations):
         current_output = neuron.get_output()
-        neuron.potential += (bias_term - neuron.potential) * default_steering_dt / time_const  # simulate update
+        neuron.potential += (bias_term - neuron.potential) * DEFAULT_STEEING_DT / time_const  # simulate update
         if last_output is not None:
             # Ensure the output is converging over time
             if bias_term > 0:

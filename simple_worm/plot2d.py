@@ -9,7 +9,7 @@ from matplotlib.animation import FFMpegWriter
 from matplotlib.colors import LinearSegmentedColormap
 
 import csv
-
+import pandas as pd
 from simple_worm.frame import FrameSequenceNumpy
 import os
 
@@ -144,7 +144,7 @@ def multiple_FS_to_clip(worms, outname="midline", dt=0.001, speed=1, xlim=[-1,3]
 
     colormap = plt.cm.get_cmap('viridis', len(worms))
 
-    plots = [ax.plot([], [], '-', color = colormap(i), label=f"{w}: {worms[w][0]}")[0] for w in range(len(worms))]
+    plots = [ax.plot([], [], '-', color = colormap(w), label=f"{w}: {worms[w][0]}")[0] for w in range(len(worms))]
     labels = [ax.text(0, 0, str(i), verticalalignment='bottom', horizontalalignment='left') for i in range(len(worms))]
 
     data = [[] for _ in range(len(worms))]
@@ -181,9 +181,9 @@ def multiple_FS_to_clip(worms, outname="midline", dt=0.001, speed=1, xlim=[-1,3]
             writer.grab_frame()
 
 # Plot the neural data from a CSV file
-def plot_neurons(data_file = 'neuron_data.csv',filename='filename'):
-    # Load the data from CSV
-    df = pd.read_csv(data_file)
+def plot_neurons(data_file = 'neuron_data',outname='filename'):
+    # Load the data from CSV 
+    df = pd.read_csv(f'{data_file}.csv')
 
     # Define the figure size and grid layout
     plt.figure(figsize=(20, 10))
@@ -197,5 +197,5 @@ def plot_neurons(data_file = 'neuron_data.csv',filename='filename'):
         plt.legend()
 
     plt.tight_layout()
-    plt.savefig(f'{filename}.png')
+    plt.savefig(f'{outname}.png')
     plt.close()
