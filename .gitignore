@@ -9,4 +9,7 @@ scripts
 *.csv
 *.mp4
 runs
-
+*.ipynb
+.pytest_cache
+.ipynb_checkpoints
+.DS_Store
