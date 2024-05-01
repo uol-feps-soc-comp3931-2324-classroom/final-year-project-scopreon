@@ -29,6 +29,24 @@ SP_DEFAULT_BIASES = np.array([0,0,0,0,0])
 
 # Contains the steering parameters for the steering circuit
 class SteeringParameters:
+    def validate_parameters(self):
+        if self.M < 0.1 or self.M > 4.2:
+            raise ValueError(f"Invalid value {M} for M. Should be in range [0.1,4.2]") 
+        if self.N < 0.1 or self.N > 4.2:
+            raise ValueError(f"Invalid value {M} for N. Should be in range [0.1,4.2]") 
+        for S in self.synapses:
+            if S < -15 or S > 15:
+                raise ValueError(f"Invalid value {S} for synapse. Should be in range [-15,15]") 
+        for B in self.biases:
+            if B < -15 or B > 15:
+                raise ValueError(f"Invalid value {B} for bias. Should be in range [-15,15]") 
+        for J in self.junctions:
+            if J < -15 or J > 15:
+                raise ValueError(f"Invalid value {J} for junction. Should be in range [0,2]") 
+        for T in self.time_consts:
+            if T < 0:
+                raise ValueError(f"Invalid value {T} for time constant. Should be in range [0,+inf]") 
+
     # Loading in parameters from a specify a filename
     def load_parameters(self, filename='parameters.ini'):
         config = configparser.ConfigParser()
@@ -47,6 +65,9 @@ class SteeringParameters:
                 self.N = SP_DEFAULT_N
 
             print("Parameters loaded from", filename)
+            
+            self.validate_parameters()
+            
             return True
             # Optionally, update any UI elements like sliders here based on the loaded values
         except KeyError as e:
@@ -89,22 +110,8 @@ class SteeringParameters:
         # quick hotfix a variable if neede
         self.temp_var = TEMP_VAR
 
-        if self.M < 0.1 or self.M > 4.2:
-            raise ValueError(f"Invalid value {M} for M. Should be in range [0.1,4.2]") 
-        if self.N < 0.1 or self.N > 4.2:
-            raise ValueError(f"Invalid value {M} for N. Should be in range [0.1,4.2]") 
-        for S in self.synapses:
-            if S < -15 or S > 15:
-                raise ValueError(f"Invalid value {S} for synapse. Should be in range [-15,15]") 
-        for B in self.biases:
-            if B < -15 or B > 15:
-                raise ValueError(f"Invalid value {B} for bias. Should be in range [-15,15]") 
-        for J in self.junctions:
-            if J < -15 or J > 15:
-                raise ValueError(f"Invalid value {J} for junction. Should be in range [0,2]") 
-        for T in self.time_consts:
-            if T < 0:
-                raise ValueError(f"Invalid value {T} for time constant. Should be in range [0,+inf]") 
+        self.validate_parameters()
+
 
     # Creating a deep copy of SteeringParameters
     def copy(self):
