@@ -20,7 +20,7 @@ import numpy as np
 simulation_lengths = [5,10,15,20,25]
 time_lengths = [0.1,0.01,0.001]
 
-steering_params = SteeringParameters(filename='/Users/saulcoops/Documents/Uni/Year_3/individual-project/saulcooperman-fyp/runs/GOOD/params.ini')
+steering_params = SteeringParameters(filename='parameters.ini')
 
 def simulate_worm(dt, l, steering):
     worm = Worm(N=48, dt=dt, neural_control=True, NP=NeuralParameters( STEERING_PARAMETERS=steering_params, STEERING=steering, AVB=0.405), quiet=True, environment=env1)

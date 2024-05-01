@@ -7,7 +7,7 @@ from simple_worm.neural_circuit import *
 from simple_worm.neural_parameters import NeuralParameters
 from simple_worm.steering_parameters import SteeringParameters
 
-steering_params = SteeringParameters(filename='/Users/saulcoops/Documents/Uni/Year_3/individual-project/saulcooperman-fyp/runs/GOOD/params.ini')
+steering_params = SteeringParameters(filename='parameters.ini')
 
 for K in [5,10,15]:
     worms = []

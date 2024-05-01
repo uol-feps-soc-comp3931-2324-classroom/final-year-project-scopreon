@@ -7,7 +7,6 @@ logs
 .eggs
 scripts
 *.csv
-*.mp4
 runs
 *.ipynb
 .pytest_cache
