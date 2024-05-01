@@ -2,10 +2,10 @@ from setuptools import setup
 
 setup(
     name='simple_worm',
-    version='0.0.1',
+    version='0.0.3',
     description='Python implementation of numerical method for visco-elastic rods.',
-    author='Tom Ranner, Tom Ilett',
-    url='https://gitlab.com/tom-ranner/simple-worm',
+    author='Tom Ranner, Tom Ilett, Amelia Smyth, Saul Cooperman',
+    url='https://github.com/uol-feps-soc-comp3931-2324-classroom/final-year-project-scopreon',
     packages=['simple_worm'],
     setup_requires=['pytest-runner'],
     tests_require=['pytest'],

@@ -1,3 +1,10 @@
+"""
+File: gradient_results.py
+Author: Saul Cooperman
+Date: 2024-05-01
+Description: Testing the worm in different NaCl gradients.
+"""
+
 from simple_worm.worm_environment import *
 from simple_worm.worm import Worm
 from simple_worm.plot2d import *

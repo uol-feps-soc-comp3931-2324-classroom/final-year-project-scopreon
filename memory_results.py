@@ -1,3 +1,10 @@
+"""
+File: memory_results.py
+Author: Saul Cooperman
+Date: 2024-05-01
+Description: Testing memory usage in steering circuit.
+"""
+
 from simple_worm.steering_circuit import SteeringCircuit
 from simple_worm.steering_parameters import SteeringParameters
 from memory_profiler import profile, memory_usage
@@ -8,7 +15,7 @@ import time
 def measure_performance():
     params = SteeringParameters()
     circuit = SteeringCircuit(dt=0.001, parameters=params)
-    for _ in range(10000):
+    for _ in range(100):
         circuit.update_state(concentration=1.0)
 
 if __name__ == '__main__':

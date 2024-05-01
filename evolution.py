@@ -1,3 +1,11 @@
+
+"""
+File: evolution.py
+Author: Saul Cooperman
+Date: 2024-05-01
+Description: Evolution algorithm for steering circuit parameter discovery.
+"""
+
 from simple_worm.worm_environment import Environment
 from simple_worm.worm import Worm
 from simple_worm.plot2d import *

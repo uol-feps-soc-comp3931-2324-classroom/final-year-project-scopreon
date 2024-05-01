@@ -1,3 +1,10 @@
+"""
+File: time_results.py
+Author: Saul Cooperman
+Date: 2024-05-01
+Description: Generating timing data for seriel and parallel simulations.
+"""
+
 from simple_worm.worm_environment import Environment
 from simple_worm.worm import Worm
 from simple_worm.plot2d import *
@@ -6,16 +13,11 @@ from simple_worm.material_parameters import *
 from simple_worm.neural_circuit import *
 from simple_worm.neural_parameters import NeuralParameters
 from simple_worm.steering_parameters import SteeringParameters
-import itertools
-import numpy
-import os
 from datetime import datetime
 import time
 from concurrent.futures import ProcessPoolExecutor
 
 import numpy as np
-
-
 
 simulation_lengths = [5,10,15,20,25]
 time_lengths = [0.1,0.01,0.001]

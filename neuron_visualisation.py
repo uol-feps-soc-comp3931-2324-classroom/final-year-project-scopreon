@@ -1,3 +1,10 @@
+"""
+File: neuron_visualisation.py
+Author: Saul Cooperman
+Date: 2024-05-01
+Description: Application for visualising neurons.
+"""
+
 from simple_worm.steering_circuit import SteeringCircuit
 from simple_worm.steering_parameters import SteeringParameters
 import matplotlib.pyplot as plt
