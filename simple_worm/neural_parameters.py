@@ -1,3 +1,10 @@
+"""
+File: neural_parameters.py
+Author: Saul Cooperman
+Date: 2024-05-01
+Description: Neural parameters for neural circuit.
+"""
+
 from simple_worm.steering_parameters import SteeringParameters
 
 NP_DEFAULT_NEURAL_UNITS = 12  # number of neural units

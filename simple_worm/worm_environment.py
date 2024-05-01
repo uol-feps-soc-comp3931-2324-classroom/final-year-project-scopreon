@@ -1,3 +1,10 @@
+"""
+File: worm_environment.py
+Author: Saul Cooperman
+Date: 2024-05-01
+Description: Worm environment class to define environment variables.
+"""
+
 from enum import Enum
 import numpy as np
 

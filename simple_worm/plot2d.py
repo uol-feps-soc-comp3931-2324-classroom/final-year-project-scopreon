@@ -1,7 +1,12 @@
+"""
+File: plot2d.py
+Authors: Amelia Smyth, Saul Cooperman 
+Date: 2024-05-01
+Description: Visualisation functions.
+"""
+
 import numpy as np
 from typing import *
-
-
 from simple_worm.worm import Worm
 import matplotlib.pyplot as plt
 import statistics

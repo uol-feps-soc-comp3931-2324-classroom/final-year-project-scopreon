@@ -1,3 +1,10 @@
+"""
+File: steering_circuit.py
+Author: Saul Cooperman
+Date: 2024-05-01
+Description: Steering circuit logic.
+"""
+
 import numpy as np
 from collections import deque
 from simple_worm.steering_parameters import SteeringParameters

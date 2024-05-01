@@ -1,3 +1,10 @@
+"""
+File: steering_parameters.py
+Author: Saul Cooperman
+Date: 2024-05-01
+Description: Defines steering parameters for a steering circuit.
+"""
+
 # Structure is based off MaterialParameters
 
 import numpy as np
@@ -82,9 +89,9 @@ class SteeringParameters:
         # quick hotfix a variable if neede
         self.temp_var = TEMP_VAR
 
-        if M < 0.1 or M > 4.2:
+        if self.M < 0.1 or self.M > 4.2:
             raise ValueError(f"Invalid value {M} for M. Should be in range [0.1,4.2]") 
-        if N < 0.1 or N > 4.2:
+        if self.N < 0.1 or self.N > 4.2:
             raise ValueError(f"Invalid value {M} for N. Should be in range [0.1,4.2]") 
         for S in self.synapses:
             if S < -15 or S > 15:

@@ -1,3 +1,10 @@
+"""
+File: neural_circuit.py
+Author: Amelia Smyth, Saul Cooperman
+Date: 2024-05-01
+Description: Neural circuit for worm.
+"""
+
 import numpy as np
 from simple_worm.neural_parameters import NeuralParameters
 from simple_worm.steering_circuit import SteeringCircuit
