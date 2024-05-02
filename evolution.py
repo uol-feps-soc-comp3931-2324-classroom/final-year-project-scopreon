@@ -26,6 +26,7 @@ parser = argparse.ArgumentParser(description='Process some integers.')
 parser.add_argument('-n', '--number', type=int, help='An integer number')
 args = parser.parse_args()
 
+# Creating new population
 def create_population():
     # Setting the seed for reproducibility
     np.random.seed(0)
@@ -43,21 +44,35 @@ def create_population():
         's2': np.random.uniform(s_range[0], s_range[1], num_rows),
         's3': np.random.uniform(s_range[0], s_range[1], num_rows),
         's4': np.random.uniform(s_range[0], s_range[1], num_rows),
-        't0': np.random.uniform(t_range[0], t_range[1], num_rows),
-        't1': np.random.uniform(t_range[0], t_range[1], num_rows),
-        't2': np.random.uniform(t_range[0], t_range[1], num_rows),
+        'b0': np.random.uniform(t_range[0], t_range[1], num_rows),
+        'b1': np.random.uniform(t_range[0], t_range[1], num_rows),
+        'b2': np.random.uniform(t_range[0], t_range[1], num_rows),
         'j1': np.random.uniform(j_range[0], j_range[1], num_rows),
         'j2': np.random.uniform(j_range[0], j_range[1], num_rows),
         'm': np.random.uniform(mn_range[0], mn_range[1], num_rows),
         'n': np.random.uniform(mn_range[0], mn_range[1], num_rows)
     }
 
+    population_steering_params = []
+    
     df = pd.DataFrame(data)
+    df.columns = data.keys()
 
-    # Saving to CSV
-    csv_file_path = "population.csv"
-    df.to_csv(csv_file_path, index=False)
+    print(df)
 
+    for index, row in df.iterrows():
+        params = SteeringParameters(
+            SYNAPSES=[row['s0'],row['s1'],row['s2'],row['s3'],row['s4']] + [0,0],
+            JUNCTIONS=[row['j1'],row['j2']],
+            BIASES=[row['b0'],row['b1'],row['b2'],0,0],
+            M=row['m'],
+            N=row['n'],
+        )
+        population_steering_params.append(params)
+
+    return population_steering_params
+
+# Reading population
 def read_population():
     population_steering_params = []
 
@@ -66,7 +81,7 @@ def read_population():
         params = SteeringParameters(
             SYNAPSES=[row['s0'],row['s1'],row['s2'],row['s3'],row['s4']] + [0,0],
             JUNCTIONS=[row['j1'],row['j2']],
-            bias_termS=[row['t0'],row['t1'],row['t2'],0,0],
+            BIASES=[row['b0'],row['b1'],row['b2'],0,0],
             M=row['m'],
             N=row['n'],
         )
@@ -74,6 +89,7 @@ def read_population():
 
     return population_steering_params
 
+# Writing population
 def write_population(population_steering_params):
     data = {
         's0': [params.synapses[0] for params in population_steering_params],
@@ -81,9 +97,9 @@ def write_population(population_steering_params):
         's2': [params.synapses[2] for params in population_steering_params],
         's3': [params.synapses[3] for params in population_steering_params],
         's4': [params.synapses[4] for params in population_steering_params],
-        't0': [params.bias_terms[0] for params in population_steering_params],
-        't1': [params.bias_terms[1] for params in population_steering_params],
-        't2': [params.bias_terms[2] for params in population_steering_params],
+        'b0': [params.biases[0] for params in population_steering_params],
+        'b1': [params.biases[1] for params in population_steering_params],
+        'b2': [params.biases[2] for params in population_steering_params],
         'j1': [params.junctions[0] for params in population_steering_params],
         'j2': [params.junctions[1] for params in population_steering_params],
         'm':  [params.M for params in population_steering_params],
@@ -96,6 +112,7 @@ def write_population(population_steering_params):
     csv_file_path = "population.csv"
     df.to_csv(csv_file_path, index=False)
 
+# Generating new popualtion
 def generate_population(selected, ideal_size = 100):
     new_generation = []
     while len(new_generation) < ideal_size:
@@ -109,12 +126,13 @@ def generate_population(selected, ideal_size = 100):
     
     return new_generation
 
+# Mutation
 def mutate(child):
     number = random.randint(0, 11)
     if 0 <= number < 5:
         child.synapses[number] = random.random() * 30 - 15
     if 5 <= number < 8:
-        child.bias_terms[number - 5] = random.random() * 30 - 15
+        child.biases[number - 5] = random.random() * 30 - 15
     if 8 <= number < 10:
         child.junctions[number - 8] = random.random() * 2
     if number == 10:
@@ -133,8 +151,8 @@ def crossover(parent1, parent2):
     child2.synapses[:s] = parent1.synapses[:s]
 
     t = random.randint(1,2)
-    child1.bias_terms[:t] = parent2.bias_terms[:t]
-    child2.bias_terms[:t] = parent1.bias_terms[:t]
+    child1.biases[:t] = parent2.biases[:t]
+    child2.biases[:t] = parent1.biases[:t]
 
     j = random.randint(0,1)
     child1.junctions[j] = parent2.junctions[j]
@@ -205,24 +223,28 @@ def simulate_worm(steering_params, worm_id):
         steering_params.save_parameters(f"parameters_ALERT_{lowest_score}")
     return lowest_score
 
-
+# Main function
 def main():
     population_params = read_population()
     scores = [0 for _ in population_params]
     
+    # Submit to executor
     with concurrent.futures.ProcessPoolExecutor(max_workers=args.number) as executor:
         futures = [executor.submit(simulate_worm, param, worm_id=i) for i, param in enumerate(population_params)]
         for i, future in enumerate(concurrent.futures.as_completed(futures)):
             scores[i] = future.result()
             print(f"Finished worm {i} with score {scores[i]}")
+
+    # Combining the data for crossover
     combined = list(zip(scores, population_params))
     sorted_combined = sorted(combined, key=lambda x: x[0])
-    top_40_percent = sorted_combined[(len(sorted_combined) // 10) * 5:]
-    remaining_population = [item[1] for item in top_40_percent]
+    top_50_percent = sorted_combined[(len(sorted_combined) // 10) * 5:]
+    remaining_population = [item[1] for item in top_50_percent]
     write_population(generate_population(remaining_population))
 
 if __name__ == "__main__":
     start_time = time.time()
-    # create_population()
+    # Comment out if not creating new population
+    write_population(create_population())
     main()
     print(f"TRAINED GENERATION IN {time.time() - start_time} seconds")
