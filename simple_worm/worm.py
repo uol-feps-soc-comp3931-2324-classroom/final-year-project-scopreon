@@ -9,7 +9,7 @@ from simple_worm.material_parameters import MaterialParametersFenics
 from simple_worm.util import f2n
 from simple_worm.neural_circuit import NeuralModel
 from simple_worm.neural_parameters import NeuralParameters
-from simple_worm.worm_environment import Environment
+from simple_worm.worm_environment import Environment, GradientDirection
 import os
 import csv
 
@@ -50,9 +50,13 @@ class Worm:
             quiet: bool = False,
             neural_control: bool = False,
             NP: NeuralParameters = NeuralParameters(),
-            environment = Environment(),
+            environment = None,
     ):
         # Domain
+        if environment is None:
+            environment = Environment()
+            environment.add_linear_2d_gradient('concentration',GradientDirection.Y, gradient=1)
+
         self.N = N
         self.dt = dt
         self.t = 0.

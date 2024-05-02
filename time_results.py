@@ -25,7 +25,7 @@ time_lengths = [0.1,0.01,0.001]
 steering_params = SteeringParameters(filename='parameters.ini')
 
 def simulate_worm(dt, l, steering):
-    worm = Worm(N=48, dt=dt, neural_control=True, NP=NeuralParameters( STEERING_PARAMETERS=steering_params, STEERING=steering, AVB=0.405), quiet=True, environment=env1)
+    worm = Worm(N=48, dt=dt, neural_control=True, NP=NeuralParameters( STEERING_PARAMETERS=steering_params, STEERING=steering, AVB=0.405), quiet=True)
     worm.solve(l, MP=MaterialParametersFenics(), reset=True).to_numpy()
 
 if __name__=='__main__':
@@ -37,7 +37,7 @@ if __name__=='__main__':
         for dt in time_lengths:
             times = time.time()
             for x in range(8):
-                worm = Worm(N=48, dt=dt, neural_control=True, NP = NeuralParameters( STEERING_PARAMETERS=steering_params, STEERING=True, AVB = 0.405), quiet = True, environment=env1 )
+                worm = Worm(N=48, dt=dt, neural_control=True, NP = NeuralParameters( STEERING_PARAMETERS=steering_params, STEERING=True, AVB = 0.405), quiet = True)
                 worm.solve(l, MP=MaterialParametersFenics(), reset=True).to_numpy()
             print(f'For dt = {dt}. T = {time.time()-times}')
         print()
@@ -48,7 +48,7 @@ if __name__=='__main__':
         for dt in time_lengths:
             times = time.time()
             for x in range(8):
-                worm = Worm(N=48, dt=dt, neural_control=True, NP = NeuralParameters( STEERING_PARAMETERS=steering_params, STEERING=False, AVB = 0.405), quiet = True, environment=env1 )
+                worm = Worm(N=48, dt=dt, neural_control=True, NP = NeuralParameters( STEERING_PARAMETERS=steering_params, STEERING=False, AVB = 0.405), quiet = True)
                 worm.solve(l, MP=MaterialParametersFenics(), reset=True).to_numpy()
             print(f'For dt = {dt}. T = {time.time()-times}')
         print()
