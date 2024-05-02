@@ -65,7 +65,7 @@ def simulate(SYNAPSES, BIASES, JUNCTIONS):
 lines = []
 
 def save_to_csv(event):
-    with open('plotting_data/steering_circuit_data.csv', 'w', newline='') as csvfile:
+    with open('steering_circuit_data.csv', 'w', newline='') as csvfile:
         writer = csv.writer(csvfile)
         writer.writerow(['ASE 0 Output', 'ASE 1 Output', 'AIY 0 Output', 'AIY 1 Output', 'AIZ 0 Output', 'AIZ 1 Output'])
         for point in points:

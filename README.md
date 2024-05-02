@@ -25,7 +25,7 @@ To run `FILE.py`
 python FILE.py
 ```
 
-To run `neuron_visualisation.py`
+To run `neuron_visualisation.py` with parameters `parameters.ini`
 
 ```bash
 python neuron_visualisation.py parameters.ini
