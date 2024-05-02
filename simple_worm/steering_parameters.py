@@ -31,9 +31,9 @@ SP_DEFAULT_BIASES = np.array([0,0,0,0,0])
 class SteeringParameters:
     def validate_parameters(self):
         if self.M < 0.1 or self.M > 4.2:
-            raise ValueError(f"Invalid value {M} for M. Should be in range [0.1,4.2]") 
+            raise ValueError(f"Invalid value {self.M} for M. Should be in range [0.1,4.2]") 
         if self.N < 0.1 or self.N > 4.2:
-            raise ValueError(f"Invalid value {M} for N. Should be in range [0.1,4.2]") 
+            raise ValueError(f"Invalid value {self.N} for N. Should be in range [0.1,4.2]") 
         for S in self.synapses:
             if S < -15 or S > 15:
                 raise ValueError(f"Invalid value {S} for synapse. Should be in range [-15,15]") 
@@ -99,16 +99,16 @@ class SteeringParameters:
         filename=None,
         TEMP_VAR=None
     ) -> None:
+        self.time_consts=TIME_CONSTANTS
+        # quick hotfix a variable if neede
+        self.temp_var = TEMP_VAR
+
         if filename is None or not self.load_parameters(filename):
             self.biases=BIASES
             self.synapses=SYNAPSES
             self.junctions=JUNCTIONS
             self.M=M
             self.N=N
-
-        self.time_consts=TIME_CONSTANTS
-        # quick hotfix a variable if neede
-        self.temp_var = TEMP_VAR
 
         self.validate_parameters()
 
