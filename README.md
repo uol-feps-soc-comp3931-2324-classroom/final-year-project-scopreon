@@ -18,6 +18,21 @@ conda env create -f environment_fyp.yml
 
 This will install all necessary dependencies as specified in the YAML file.
 
+## Running Code
+To run `FILE.py`
+
+```bash
+python FILE.py
+```
+
+To run `neuron_visualisation.py`
+
+```bash
+python neuron_visualisation.py parameters.ini
+```
+Examples of the framework being used can be found in the .py files not in tests/ and simple_worm/
+
+
 ## Running Tests
 
 To run tests, use the following command, replacing TEST_NAME with the name of the test file you wish to run:
@@ -25,6 +40,7 @@ To run tests, use the following command, replacing TEST_NAME with the name of th
 ```bash
 python -m pytest tests/TEST_NAME.py
 ```
+
 
 # Additional Documentation
 
